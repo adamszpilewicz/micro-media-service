@@ -89,22 +89,22 @@ func init() {
 
 func main() {
 	http.HandleFunc("/api/v1/version", handleVersion)
-	http.HandleFunc("/api/v1/movies", handlerAllMovies)
+	http.HandleFunc("/api/v1/movies", handleMovies)
 
 	log.Printf("Starting movies microservice on port %d", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
 
-func handleVersion(wr http.ResponseWriter, r *http.Request) {
+func handleVersion(rw http.ResponseWriter, r *http.Request) {
 	verJSON, err := json.Marshal(version)
 	if err != nil {
 		panic("Error marshaling version")
 	}
 	log.Printf("Request for version, the response is %+v", string(verJSON))
-	fmt.Fprintf(wr, string(verJSON))
+	fmt.Fprintf(rw, string(verJSON))
 }
 
-func handlerAllMovies(rw http.ResponseWriter, r *http.Request) {
+func handleMovies(rw http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(rw)
 	encoder.Encode(&movies)
 }
