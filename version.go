@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Version encapsulates the version number of the movie microservice
@@ -23,6 +24,6 @@ func handleVersion(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Error marshaling version")
 	}
-	log.Printf("Request for version, the response is %+v", string(verJSON))
+	log.Debugf("Request for version, the response is %+v", string(verJSON))
 	fmt.Fprintf(w, string(verJSON))
 }

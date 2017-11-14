@@ -1,12 +1,30 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"log"
 	"net/http"
+	"os"
+	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const port = 8086
+
+var verboseFlag bool
+
+func init() {
+	flag.BoolVar(&verboseFlag, "verbose", false, "Enable verbose mode")
+	flag.Parse()
+	if verboseEnv := strings.ToLower(os.Getenv("MOVIE_VERBOSE")); verboseEnv == "true" || verboseFlag {
+		log.SetLevel(log.DebugLevel)
+	}
+	formatter := &log.TextFormatter{
+		FullTimestamp: true,
+	}
+	log.SetFormatter(formatter)
+}
 
 func main() {
 	http.HandleFunc("/api/v1/version", handleVersion)
